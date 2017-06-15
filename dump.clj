@@ -77,3 +77,41 @@
 
 
 (<!! (client/q conn {:query titles-from-1985 :args [db]}))
+
+
+
+
+(def titles-from-1985-full '[:find ?title ?year ?genre
+                             :where
+                             [?e :movie/title ?title]
+                             [?e :movie/release-year ?year]
+                             [?e :movie/genre ?genre]
+                             [?e :movie/release-year 1985]])
+
+(<!! (client/q conn {:query titles-from-1985-full :args [db]}))
+
+
+
+
+(def commando (ffirst (<!! (client/q conn {:query '[:find ?e
+                                                    :where [?e :movie/title "Commando"]]
+                                           :args [db]}))))
+
+(<!! (client/transact conn {:tx-data [{:db/id commando :movie/genre "future sci/fi"}]}))
+
+db
+
+(def old-db (client/as-of db 1004))
+
+
+(def hdb (client/history db))
+
+(<!! (client/q conn {:query '[:find ?genre
+                              :where
+                              [?e :movie/title "Commando"]
+                              [?e :movie/genre ?genre]]
+                     :args [hdb]}))
+
+
+
+
