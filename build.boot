@@ -2,7 +2,8 @@
  :source-paths #{"src/clj"}
  :dependencies '[[org.clojure/clojure "1.9.0-alpha17" :scope "provided"]
                  [com.datomic/clj-client "0.8.606"]
-                 [org.clojure/core.async "0.3.443"]])
+                 [org.clojure/core.async "0.3.443"]
+                 [com.datomic/datomic-free "0.9.5561.50"]])
 
 (require 'boot.repl)
 
