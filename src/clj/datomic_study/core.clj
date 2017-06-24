@@ -73,6 +73,48 @@
                               [?e2 :inv/sku ?sku]]}))
 
 
+(def order-schema
+  [{:db/ident :order/items
+    :db/valueType :db.type/ref
+    :db/cardinality :db.cardinality/many
+    :db/isComponent true}
+   
+   {:db/ident :item/id
+    :db/valueType :db.type/ref
+    :db/cardinality :db.cardinality/one}
+
+   {:db/ident :item/count
+    :db/valueType :db.type/long
+    :db/cardinality :db.cardinality/one}])
+
+(<!! (client/transact conn {:tx-data order-schema}))
+
+
+(def add-order
+  {:order/items [{:item/id [:inv/sku "SKU-25"]
+                  :item/count 20}
+                 {:item/id [:inv/sku "SKU-40"]
+                  :item/count 10}]})
+
+(<!! (client/transact conn {:tx-data [add-order]}))
+
+(def db (client/db conn))
+
+
+(<!! (client/q conn {:query '[:find ?sku
+                              :in $ ?inv
+                              :where
+                              [?item :item/id ?inv]
+                              [?order :order/items ?item]
+                              [?order :order/items ?other-item]
+                              [?other-item :item/id ?other-inv]
+                              [?other-inv :inv/sku ?sku]]
+                     :args [db [:inv/sku "SKU-25"]]}))
+
+
+
+
+
 
 
 #_(
