@@ -1,4 +1,4 @@
-(ns datomic-study.core
+(ns ds.core
   (:require [clojure.core.async :refer [<!!]]
             [datomic.client     :as    client]
             [datomic.api        :as    d]))

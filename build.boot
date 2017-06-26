@@ -26,9 +26,9 @@
 (deftask build
   []
   (comp
-   (aot :namespace #{'brun.core})
+   (aot :namespace #{'ds.core})
    (uber)
-   (jar :file "app.jar" :main 'datomic-study.core)
+   (jar :file "app.jar" :main 'ds.core)
    (sift :include #{#"app.jar"})
    (target :dir #{"target"})))
 
