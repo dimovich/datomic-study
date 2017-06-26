@@ -113,6 +113,22 @@
 
 
 
+(def rules
+  '[[(ordered-together ?inv ?other-inv)
+     [?item :item/id ?inv]
+     [?order :order/items ?item]
+     [?order :order/items ?other-item]
+     [?other-item :item/id ?other-inv]]])
+
+
+(<!! (client/q conn {:query '[:find ?sku
+                              :in $ % ?inv
+                              :where
+                              (ordered-together ?inv ?other-inv)
+                              [?other-inv :inv/sku ?sku]]
+                     :args [db rules [:inv/sku "SKU-25"]]}))
+
+
 
 
 

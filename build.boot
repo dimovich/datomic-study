@@ -26,7 +26,7 @@
 (deftask build
   []
   (comp
-   (aot :namespace #{'ds.core})
+   ;;(aot :namespace #{'ds.core})
    (uber)
    (jar :file "app.jar" :main 'ds.core)
    (sift :include #{#"app.jar"})
